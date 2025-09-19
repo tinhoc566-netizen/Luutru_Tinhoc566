@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài Trắc Nghiệm: Chuyển Đổi Số trong Giáo Dục Tiểu Học</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+        .hidden {
+            display: none;
+        }
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+        .user-info {
+            margin-bottom: 20px;
+        }
+        .user-info label {
+            font-weight: bold;
+        }
+        .user-info input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .question {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .question p {
+            font-weight: bold;
+        }
+        .question label {
+            display: block;
+            padding: 10px;
+            margin-bottom: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .question label:hover {
+            background-color: #e9e9e9;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 30px;
+            text-align: center;
+        }
+        #results h2 {
+            color: #28a745;
+        }
+        #ranking-table {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bài Trắc Nghiệm: Chuyển Đổi Số trong Giáo Dục Tiểu Học</h1>
+        <form id="quizForm">
+            <div class="user-info">
+                <label for="name">Họ và tên:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div id="questions-container"></div>
+            
+            <button type="submit">Nộp bài</button>
+        </form>
+        <div id="results" class="hidden">
+            <h2>Kết Quả</h2>
+            <p>Số câu trả lời đúng: <span id="correct-count"></span></p>
+            <p>Số câu trả lời sai: <span id="wrong-count"></span></p>
+            <div id="ranking-table"></div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "1. Chuyển đổi số trong giáo dục tiểu học là gì?",
+                options: [
+                    "Việc thay sách giáo khoa giấy bằng sách giáo khoa mới",
+                    "Ứng dụng công nghệ số vào dạy học, quản lý và đánh giá",
+                    "Quá trình ứng dụng công nghệ số để nâng cao chất lượng dạy và học",
+                    "Thay toàn bộ giáo viên bằng máy tính"
+                ],
+                answer: "Quá trình ứng dụng công nghệ số để nâng cao chất lượng dạy và học"
+            },
+            {
+                question: "2. Mục tiêu quan trọng của chuyển đổi số trong giáo dục tiểu học là:",
+                options: [
+                    "Giảm số lượng học sinh trong lớp",
+                    "Nâng cao chất lượng dạy – học, quản lý và tạo cơ hội học tập công bằng",
+                    "Bỏ hoàn toàn việc dạy trực tiếp",
+                    "Giúp học sinh chơi nhiều trò chơi hơn trên máy tính"
+                ],
+                answer: "Nâng cao chất lượng dạy – học, quản lý và tạo cơ hội học tập công bằng"
+            },
+            {
+                question: "3. Một trong những lợi ích lớn nhất của chuyển đổi số trong tiểu học là:",
+                options: [
+                    "Học sinh không cần đến trường",
+                    "Giáo viên không phải chuẩn bị bài giảng",
+                    "Chỉ dạy qua máy chiếu",
+                    "Học sinh có môi trường học tập sinh động, phong phú và cá nhân hóa"
+                ],
+                answer: "Học sinh có môi trường học tập sinh động, phong phú và cá nhân hóa"
+            },
+            {
+                question: "4. Ví dụ nào dưới đây thể hiện ứng dụng chuyển đổi số trong lớp học tiểu học?",
+                options: [
+                    "Giáo viên chỉ dùng phấn và bảng",
+                    "Học sinh học thuộc lòng tất cả bài giảng",
+                    "Sử dụng phần mềm học trực tuyến và tài nguyên số để hỗ trợ bài giảng",
+                    "Không cho học sinh sử dụng internet"
+                ],
+                answer: "Sử dụng phần mềm học trực tuyến và tài nguyên số để hỗ trợ bài giảng"
+            },
+            {
+                question: "5. Thiết bị nào thường được sử dụng trong chuyển đổi số giáo dục tiểu học?",
+                options: [
+                    "Máy ảnh cơ",
+                    "Máy tính, máy tính bảng, điện thoại thông minh",
+                    "Bút chì, thước kẻ",
+                    "Máy in cơ học"
+                ],
+                answer: "Máy tính, máy tính bảng, điện thoại thông minh"
+            },
+            {
+                question: "6. Nền tảng nào hỗ trợ mạnh mẽ cho chuyển đổi số trong giáo dục?",
+                options: [
+                    "Internet và các nền tảng trực tuyến",
+                    "Thư viện truyền thống",
+                    "Bảng đen, phấn trắng",
+                    "Sổ điểm giấy"
+                ],
+                answer: "Internet và các nền tảng trực tuyến"
+            },
+            {
+                question: "7. Chuyển đổi số giúp giáo viên:",
+                options: [
+                    "Không cần soạn bài",
+                    "Không phải chấm điểm",
+                    "Quản lý lớp học hiệu quả và cá nhân hóa việc dạy học",
+                    "Không phải trao đổi với phụ huynh"
+                ],
+                answer: "Quản lý lớp học hiệu quả và cá nhân hóa việc dạy học"
+            },
+            {
+                question: "8. Chuyển đổi số trong giáo dục tiểu học giúp học sinh:",
+                options: [
+                    "Không cần làm bài tập",
+                    "Chỉ học qua video giải trí",
+                    "Có thêm nhiều cách tiếp cận kiến thức phong phú và linh hoạt",
+                    "Không cần tham gia giờ học"
+                ],
+                answer: "Có thêm nhiều cách tiếp cận kiến thức phong phú và linh hoạt"
+            },
+            {
+                question: "9. Một trong những thách thức lớn của chuyển đổi số trong giáo dục là:",
+                options: [
+                    "Giáo viên quá nhiều thời gian rảnh",
+                    "Học sinh không cần học nữa",
+                    "Hạ tầng công nghệ chưa đồng bộ và năng lực số của giáo viên, học sinh còn hạn chế",
+                    "Không cần đầu tư cơ sở vật chất"
+                ],
+                answer: "Hạ tầng công nghệ chưa đồng bộ và năng lực số của giáo viên, học sinh còn hạn chế"
+            },
+            {
+                question: "10. Trong dạy học trực tuyến, yếu tố nào quan trọng nhất?",
+                options: [
+                    "Phòng học rộng rãi",
+                    "Đường truyền internet ổn định và thiết bị phù hợp",
+                    "Bảng đen và phấn trắng",
+                    "Sách vở truyền thống"
+                ],
+                answer: "Đường truyền internet ổn định và thiết bị phù hợp"
+            },
+            {
+                question: "11. Hình thức nào sau đây KHÔNG thuộc chuyển đổi số trong giáo dục?",
+                options: [
+                    "Học trực tuyến",
+                    "Dạy học qua phần mềm tương tác",
+                    "Dạy – học hoàn toàn bằng giấy bút truyền thống",
+                    "Quản lý điểm số bằng phần mềm"
+                ],
+                answer: "Dạy – học hoàn toàn bằng giấy bút truyền thống"
+            },
+            {
+                question: "12. Giáo viên tiểu học cần rèn luyện kỹ năng gì để thích ứng với chuyển đổi số?",
+                options: [
+                    "Nấu ăn, may vá",
+                    "Sử dụng công nghệ thông tin và thiết kế học liệu số",
+                    "Chơi thể thao",
+                    "Nghệ thuật truyền thống"
+                ],
+                answer: "Sử dụng công nghệ thông tin và thiết kế học liệu số"
+            },
+            {
+                question: "13. Chuyển đổi số trong quản lý giáo dục tiểu học thể hiện qua:",
+                options: [
+                    "Ghi chép bằng tay",
+                    "Quản lý học sinh bằng sổ giấy",
+                    "Tổ chức trò chơi dân gian",
+                    "Quản lý hồ sơ, điểm số và thông tin học sinh qua phần mềm"
+                ],
+                answer: "Quản lý hồ sơ, điểm số và thông tin học sinh qua phần mềm"
+            },
+            {
+                question: "14. Một yếu tố quan trọng để thực hiện chuyển đổi số hiệu quả là:",
+                options: [
+                    "Tăng số lượng bài tập về nhà",
+                    "Không cần phụ huynh tham gia",
+                    "Sự phối hợp giữa nhà trường, giáo viên, phụ huynh và học sinh",
+                    "Cắt giảm thời gian học"
+                ],
+                answer: "Sự phối hợp giữa nhà trường, giáo viên, phụ huynh và học sinh"
+            },
+            {
+                question: "15. Trong tương lai, chuyển đổi số sẽ giúp giáo dục tiểu học hướng tới:",
+                options: [
+                    "Dạy học chỉ qua máy móc, không cần giáo viên",
+                    "Học sinh không cần đi học",
+                    "Tăng cường học thuộc lòng",
+                    "Nền giáo dục hiện đại, công bằng, chất lượng và hội nhập quốc tế"
+                ],
+                answer: "Nền giáo dục hiện đại, công bằng, chất lượng và hội nhập quốc tế"
+            }
+        ];
+
+        const questionsContainer = document.getElementById('questions-container');
+        const quizForm = document.getElementById('quizForm');
+        const resultsDiv = document.getElementById('results');
+        const correctCountSpan = document.getElementById('correct-count');
+        const wrongCountSpan = document.getElementById('wrong-count');
+        const rankingTableDiv = document.getElementById('ranking-table');
+        
+        function displayQuestions() {
+            quizData.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.classList.add('question');
+                questionDiv.innerHTML = `<p>${q.question}</p>`;
+                q.options.forEach((option, optionIndex) => {
+                    const label = document.createElement('label');
+                    label.innerHTML = `
+                        <input type="radio" name="question${index}" value="${option}">
+                        ${option}
+                    `;
+                    questionDiv.appendChild(label);
+                });
+                questionsContainer.appendChild(questionDiv);
+            });
+        }
+
+        quizForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let correctAnswers = 0;
+            
+            quizData.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.answer) {
+                    correctAnswers++;
+                }
+            });
+
+            const wrongAnswers = quizData.length - correctAnswers;
+            correctCountSpan.textContent = correctAnswers;
+            wrongCountSpan.textContent = wrongAnswers;
+            resultsDiv.classList.remove('hidden');
+
+            const score = (correctAnswers / quizData.length) * 100;
+            let rank = '';
+            if (score >= 90) rank = 'Xuất sắc';
+            else if (score >= 70) rank = 'Giỏi';
+            else if (score >= 50) rank = 'Khá';
+            else rank = 'Cần cố gắng';
+
+            rankingTableDiv.innerHTML = `
+                <h3>Thống kê xếp loại</h3>
+                <p><strong>Điểm của bạn:</strong> ${correctAnswers} / ${quizData.length} (${score.toFixed(2)}%)</p>
+                <p><strong>Xếp loại:</strong> ${rank}</p>
+            `;
+        });
+
+        displayQuestions();
+    </script>
+</body>
+</html>
